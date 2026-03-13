@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prompt Router Chat</title>
+    <link rel="stylesheet" href="/static/app.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Intent-first AI assistant</p>
+          <h1>Prompt Router Chat Studio</h1>
+          <p class="lead">
+            Type a question, let the router classify it, and watch the request
+            flow to a focused specialist instead of a generic all-purpose bot.
+          </p>
+          <div class="quick-tags">
+            <button class="quick-tag" data-message="how to sort in cpp?">C++ help</button>
+            <button class="quick-tag" data-message="what's the average of these numbers: 12, 45, 23, 67, 34">Data check</button>
+            <button class="quick-tag" data-message="My boss says my writing is too verbose.">Writing feedback</button>
+            <button class="quick-tag" data-message="I'm preparing for a job interview, any tips?">Career advice</button>
+          </div>
+        </div>
+        <aside class="hero-panel">
+          <div class="signal-card">
+            <span class="signal-label">Live Route Preview</span>
+            <div class="signal-metrics">
+              <div>
+                <span class="metric-value" id="heroIntent">waiting</span>
+                <span class="metric-label">intent</span>
+              </div>
+              <div>
+                <span class="metric-value" id="heroConfidence">--</span>
+                <span class="metric-label">confidence</span>
+              </div>
+            </div>
+            <p id="heroStatus" class="signal-status">
+              Send a message to see which expert answers it.
+            </p>
+          </div>
+        </aside>
+      </header>
+
+      <main class="chat-layout">
+        <section class="chat-card">
+          <div id="conversation" class="conversation" aria-live="polite">
+            <article class="message system-message">
+              <div class="message-meta">
+                <span class="badge badge-system">system</span>
+              </div>
+              <div class="bubble">
+                Ask anything about coding, data analysis, writing feedback, or
+                career advice. I will route it to the best persona and show the
+                result below.
+              </div>
+            </article>
+          </div>
+
+          <form id="chatForm" class="composer">
+            <label class="sr-only" for="messageInput">Your message</label>
+            <textarea
+              id="messageInput"
+              name="message"
+              rows="3"
+              placeholder="Ask a coding, data, writing, or career question..."
+              required
+            ></textarea>
+            <div class="composer-bar">
+              <p class="hint">
+                Tip: use <code>@code</code>, <code>@data</code>,
+                <code>@writing</code>, or <code>@career</code> to bypass
+                classification.
+              </p>
+              <button id="sendButton" type="submit">Route Message</button>
+            </div>
+          </form>
+        </section>
+
+        <aside class="insights-card">
+          <h2>How this works</h2>
+          <ol>
+            <li>A lightweight model classifies your intent.</li>
+            <li>The router selects a specialist persona.</li>
+            <li>The final response is logged and returned.</li>
+          </ol>
+          <div id="lastRoute" class="route-summary empty">
+            No route yet. Your latest request details will appear here.
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <template id="messageTemplate">
+      <article class="message">
+        <div class="message-meta"></div>
+        <div class="bubble"></div>
+      </article>
+    </template>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
