@@ -119,6 +119,7 @@ python cli.py --json "@code fxi thsi bug pls: for i in range(10) print(i)"
 Build and run with Docker Compose:
 
 ```bash
+copy .env.example .env
 docker compose up --build
 ```
 

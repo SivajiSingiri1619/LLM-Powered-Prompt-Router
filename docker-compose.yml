@@ -2,12 +2,9 @@ services:
   prompt-router:
     build:
       context: .
+    env_file:
+      - .env
     ports:
       - "8000:8000"
-    environment:
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
-      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
-      CLASSIFIER_MODEL: ${CLASSIFIER_MODEL:-gpt-4.1-nano}
-      GENERATION_MODEL: ${GENERATION_MODEL:-gpt-4.1-mini}
-      CONFIDENCE_THRESHOLD: ${CONFIDENCE_THRESHOLD:-0.70}
-      ROUTE_LOG_PATH: ${ROUTE_LOG_PATH:-route_log.jsonl}
+    volumes:
+      - ./route_log.jsonl:/app/route_log.jsonl

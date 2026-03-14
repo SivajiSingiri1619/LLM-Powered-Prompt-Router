@@ -35,11 +35,34 @@ class OpenAIResponsesClient:
         temperature: float,
         max_output_tokens: int,
     ) -> str:
-        response = self._client.responses.create(
-            model=model,
-            instructions=instructions,
-            input=user_message,
-            temperature=temperature,
-            max_output_tokens=max_output_tokens,
-        )
+        from openai import APIConnectionError, AuthenticationError, BadRequestError, OpenAIError, RateLimitError
+
+        try:
+            response = self._client.responses.create(
+                model=model,
+                instructions=instructions,
+                input=user_message,
+                temperature=temperature,
+                max_output_tokens=max_output_tokens,
+            )
+        except AuthenticationError as exc:
+            raise RuntimeError(
+                "Authentication failed. Check your OPENAI_API_KEY or GROQ_API_KEY and restart the server."
+            ) from exc
+        except RateLimitError as exc:
+            raise RuntimeError(
+                "Rate limit reached for the LLM provider. Please wait and try again."
+            ) from exc
+        except APIConnectionError as exc:
+            raise RuntimeError(
+                "Could not reach the LLM provider. Check your internet connection or provider base URL."
+            ) from exc
+        except BadRequestError as exc:
+            raise RuntimeError(
+                f"Provider rejected the request: {exc}"
+            ) from exc
+        except OpenAIError as exc:
+            raise RuntimeError(
+                f"LLM provider error: {exc}"
+            ) from exc
         return (response.output_text or "").strip()
